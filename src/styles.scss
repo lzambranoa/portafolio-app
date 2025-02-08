@@ -1,0 +1,56 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+
+//   Variables
+
+$backgroundColor: #1E1E2E;
+$botonColor: #542C49;
+$fontColor: #EDEDED;
+$hoverColor: #F3A712;
+$titleColor: #7D5BA6;
+
+$fontText: "Montserrat", serif;
+
+body {
+    background-color: $backgroundColor;
+    color: $fontColor;
+    margin: 0px;
+}
+
+.btn-contacto {
+  background-color: $botonColor;
+  color: #EDEDED;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hoverColor;
+    color: $botonColor;
+  }
+
+  @media (max-width: 992px) {
+    margin: 0px 10px;
+  }
+}
+
+.btn-light {
+  background-color: transparent;
+  color: $hoverColor;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid $hoverColor;
+  padding: 10px 15px;
+  cursor: pointer;
+}
