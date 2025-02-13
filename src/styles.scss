@@ -22,6 +22,17 @@ body {
     margin: 0px;
 }
 
+h2 {
+  color: $titleColor;
+  font-size: 2.5rem;
+  margin: 20px 0px;
+}
+
+h3 {
+  color: $titleColor;
+  font-size: 1.5rem;
+}
+
 .btn-contacto {
   background-color: $botonColor;
   color: #EDEDED;
