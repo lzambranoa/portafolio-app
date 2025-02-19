@@ -13,8 +13,15 @@ $botonColor: #542C49;
 $fontColor: #EDEDED;
 $hoverColor: #F3A712;
 $titleColor: #7D5BA6;
+$color-primario: #542C49;
 
 $fontText: "Montserrat", serif;
+
+
+@mixin focus-effect {
+  border-color: $color-primario;
+  box-shadow: none;
+}
 
 body {
     background-color: $backgroundColor;
@@ -64,4 +71,25 @@ h3 {
   border: 1px solid $hoverColor;
   padding: 10px 15px;
   cursor: pointer;
+}
+
+.form-floating {
+  input, textarea {
+    background: transparent !important;
+    color: $fontColor !important;
+    caret-color: $hoverColor;
+    border: none;
+    border-bottom: 2px solid $hoverColor;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+      @include focus-effect;
+      background: transparent;
+    }
+  }
+
+  label {
+    color: $hoverColor;
+  }
 }
