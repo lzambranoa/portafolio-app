@@ -1,19 +1,19 @@
 <section class="container my-5">
     <h2 class="text-center">Contactame</h2>
-    <form  action="" method="post">
+    <form  #contactForm="ngForm" (ngSubmit)="sendEmail($event)">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre">
+            <input type="text" class="form-control" id="name" name="user_name" placeholder="Ingresa tu nombre">
             <label for="name">Nombre</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="telefono" placeholder="Ingresa tu teléfono">
-            <label for="telefono">Telefono</label>
+            <input type="email" class="form-control" id="email" name="user_email" placeholder="Ingresa tu email">
+            <label for="email">Email</label>
         </div>
         <div class="form-floating">
-            <textarea class="form-control" name="mensaje" id="mensaje" rows="5" cols="5" style="height: 100px" placeholder="Enviame un mensaje"></textarea>
+            <textarea class="form-control" name="message" id="mensaje" rows="5" cols="5" style="height: 100px" placeholder="Enviame un mensaje"></textarea>
             <label for="mensaje" class="form-label">Mensaje</label>
         </div>
-        <button class="btn-contacto mt-3 w-100">
+        <button type="submit" class="btn-contacto mt-3 w-100">
             Enviar
         </button>
     </form>
