@@ -3,7 +3,38 @@
     filter: brightness(0) saturate(100%) invert(79%) sepia(36%) saturate(4543%) hue-rotate(355deg) brightness(100%) contrast(91%);
 }
 
-.container-logo {
-    padding: 30px;
-    
-}
+.scroll-container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  .scroll-content {
+    display: flex;
+    width: max-content;
+    animation: scroll-animation 30s linear infinite;
+  }
+  
+  .scroll-group {
+    display: flex;
+  }
+  
+  .scroll-group img {
+    width: 120px; /* Ajusta según sea necesario */
+    height: auto;
+    flex-shrink: 0;
+    margin: 0px 15px;
+
+    @media (max-width: 768px) {
+        width: 70px;
+    }
+  }
+  
+  @keyframes scroll-animation {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-80%);
+    }
+  }
