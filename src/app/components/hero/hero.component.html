@@ -5,14 +5,16 @@
             <section class="info">
                 <section>
                     <div>
-                        <h1>Leonardo</h1>
-                        <h2>zambrano</h2>
+                        <h1 class="tracking-in-contract">Leonardo</h1>
+                        <h2 class="tracking-in-contract-bck-bottom">Zambrano</h2>
                         <p>Desarrollador Web FullStack</p>
                     </div>
                 </section>
                 <section>
-                    <button class="btn-light">Hoja de vida</button>
-                    <button class="btn-contacto ms-2">Portafolio</button>
+                    <button (click)="downloadPdf()" class="btn-light">Hoja de vida</button>
+                    <a href="#portfolio">
+                        <button class="btn-contacto ms-2">Portafolio</button>
+                    </a>
                 </section>
             </section>
         </div>

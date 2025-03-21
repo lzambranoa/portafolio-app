@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class HeroComponent {
 
+downloadPdf() {
+  const link = document.createElement('a');
+  link.setAttribute('target', '_blank');
+  link.setAttribute('href', '../../../assets/documents/CV - Leonardo Zambrano Amezquita.pdf');
+  link.setAttribute('download', `CV.pdf`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove
+  }
 }
