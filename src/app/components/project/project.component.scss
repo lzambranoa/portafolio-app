@@ -1,8 +1,50 @@
 .card-projects {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
+}
+.contenedor-projects {
+  &:hover {
+    box-shadow: 0 0 20px #4ecdc4, 0 0 40px #349090;
+    animation: glow-border 1.5s infinite alternate;
+
+    @keyframes glow-border {
+      from {
+        box-shadow: 0 0 20px #4ecdc4, 0 0 40px #349090;
+      }
+      to {
+        box-shadow: 0 0 40px #4ecdc4, 0 0 60px #349090;
+      }
+    }
+  }
 }
 
+.marco {
+  margin: 0 auto;
+  width: 60%;
+  padding-top: 60%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px #4ecdc4, 0 0 40px #349090;
+  animation: glow-border 1.5s infinite alternate;
+
+  img {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    width: 100%;
+    height: auto;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes glow-border {
+  from {
+    box-shadow: 0 0 20px #4ecdc4, 0 0 40px #349090;
+  }
+  to {
+    box-shadow: 0 0 40px #4ecdc4, 0 0 60px #349090;
+  }
+}
