@@ -1,0 +1,140 @@
+.galaxy-container {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 500px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+}
+
+.galaxy-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.skill-tooltip {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 250px;
+  max-width: 80%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  transform-origin: left bottom;
+  
+  .tooltip-content {
+    position: relative;
+    
+    .skill-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      display: block;
+      filter: drop-shadow(0 0 8px currentColor);
+      transition: all 0.3s ease;
+    }
+    
+    h3 {
+      color: #61DAFB;
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    
+    p {
+      color: #eee;
+      margin: 0;
+      text-align: center;
+      font-size: 1rem;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+.click-prompt {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 50px;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  animation: float 3s ease-in-out infinite;
+  z-index: 5;
+  
+  .prompt-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .click-icon {
+      font-size: 1.5rem;
+    }
+    
+    p {
+      margin: 0;
+      color: white;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Animaciones */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Angular animations */
+:host {
+  display: block;
+}

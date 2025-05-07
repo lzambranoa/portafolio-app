@@ -1,0 +1,25 @@
+<div class="galaxy-container">
+  <canvas #galaxyCanvas class="galaxy-canvas"></canvas>
+  
+  <!-- Tooltip mejorado -->
+  <div *ngIf="selectedSkill" class="skill-tooltip" [@pulse]="selectedSkill ? 'visible' : 'hidden'">
+    <div class="tooltip-content">
+      <img [src]="selectedSkill.icon" [alt]="selectedSkill.name" class="skill-icon">
+      <h3>{{ selectedSkill.name }}</h3>
+      <p>{{ selectedSkill.experience }} de experiencia</p>
+      <button (click)="selectedSkill = null" class="close-btn">
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Indicación para hacer click -->
+  <div *ngIf="showClickPrompt" class="click-prompt" @fadeInOut>
+    <div class="prompt-content">
+      <span class="click-icon">👆</span>
+      <p>Haz click en los planetas</p>
+    </div>
+  </div>
+</div>

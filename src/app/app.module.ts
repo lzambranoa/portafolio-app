@@ -11,6 +11,7 @@ import { SkillsComponent } from './components/skills/skills.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
+import { SkillGalaxyComponent } from './components/skill-galaxy/skill-galaxy.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     ProjectComponent,
     SkillsComponent,
     ContactComponent,
-    FooterComponent
+    FooterComponent, 
+    SkillGalaxyComponent
   ],
   imports: [
     BrowserModule,
