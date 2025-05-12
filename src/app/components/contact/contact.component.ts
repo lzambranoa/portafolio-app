@@ -29,5 +29,11 @@ private public_key = environment.PUBLIC_KEY;
       .catch((error) => {
         console.error('Error al enviar el correo:', (error as EmailJSResponseStatus).text);
       });
+
+      this.resetForm(e.target as HTMLFormElement);
+  }
+
+  public resetForm(form: HTMLFormElement): void {
+    form.reset();
   }
 }

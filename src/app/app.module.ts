@@ -12,13 +12,15 @@ import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { SkillGalaxyComponent } from './components/skill-galaxy/skill-galaxy.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
+    AboutComponent,
     AppComponent,
     NavbarComponent,
     HeroComponent,
-    AboutComponent,
     ProjectComponent,
     SkillsComponent,
     ContactComponent,
@@ -28,7 +30,9 @@ import { SkillGalaxyComponent } from './components/skill-galaxy/skill-galaxy.com
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
