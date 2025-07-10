@@ -1,6 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, AfterViewInit, NgZone } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, NgZone, OnDestroy, HostListener } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -20,17 +19,15 @@ interface Skill {
   templateUrl: './skill-galaxy.component.html',
   styleUrls: ['./skill-galaxy.component.scss'],
   animations: [
-    // Animación para el tooltip
     trigger('pulse', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(20px)' }),
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+        style({ opacity: 0, transform: 'translateY(20px) scale(0.9)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
       ]),
       transition(':leave', [
-        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(20px)' }))
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(20px) scale(0.9)' }))
       ])
     ]),
-    // Animación para el prompt de click
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0 }),
@@ -42,11 +39,10 @@ interface Skill {
     ])
   ]
 })
-export class SkillGalaxyComponent implements AfterViewInit {
+export class SkillGalaxyComponent implements AfterViewInit, OnDestroy {
   @ViewChild('galaxyCanvas', { static: true }) 
   private galaxyCanvas!: ElementRef<HTMLCanvasElement>;
 
-  // Habilidades públicas para el template
   public skills: Skill[] = [
     { name: 'Angular', icon: '../../../assets/img/icons/angular.svg', size: 1.2, color: '#DD0031', x: 0, y: 0, z: 0, experience: '2+ años' },
     { name: 'React', icon: '../../../assets/img/icons/react.svg', size: 1.0, color: '#61DAFB', x: 0, y: 0, z: 0, experience: '1+ año' },
@@ -57,6 +53,7 @@ export class SkillGalaxyComponent implements AfterViewInit {
   ];
 
   public selectedSkill: Skill | null = null;
+  public hoveredSkill: Skill | null = null;
   public showClickPrompt = true;
 
   private scene!: THREE.Scene;
@@ -86,12 +83,21 @@ export class SkillGalaxyComponent implements AfterViewInit {
     }
   }
 
+  // Método para cerrar el tooltip
+  public closeTooltip(): void {
+    this.selectedSkill = null;
+  }
+
+  // Cerrar tooltip al presionar Escape
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    this.closeTooltip();
+  }
+
   private initGalaxy(): void {
-    // 1. Configuración inicial de la escena
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x000814);
 
-    // 2. Configuración de cámara responsive
     const canvas = this.galaxyCanvas.nativeElement;
     this.camera = new THREE.PerspectiveCamera(
       this.wasMobile ? 55 : 45,
@@ -100,7 +106,6 @@ export class SkillGalaxyComponent implements AfterViewInit {
       1000
     );
     
-    // 3. Renderer optimizado
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       antialias: true,
@@ -109,7 +114,6 @@ export class SkillGalaxyComponent implements AfterViewInit {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-    // 4. Configuración de iluminación
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
     this.scene.add(ambientLight);
 
@@ -117,12 +121,9 @@ export class SkillGalaxyComponent implements AfterViewInit {
     directionalLight.position.set(5, 5, 5);
     this.scene.add(directionalLight);
 
-    // 5. Creación de elementos
     this.createStars();
     this.distributePlanets();
     this.setupControls();
-
-    // 6. Configuración de interactividad
     this.addInteractivity();
     window.addEventListener('resize', this.onWindowResize.bind(this));
   }
@@ -157,7 +158,6 @@ export class SkillGalaxyComponent implements AfterViewInit {
     const goldenRatio = (1 + Math.sqrt(5)) / 2;
     
     this.skills.forEach((skill, index) => {
-      // Distribución en espiral Fibonacci
       const theta = 2 * Math.PI * index / goldenRatio;
       const phi = Math.acos(1 - 2 * (index + 0.5) / count);
       
@@ -165,7 +165,6 @@ export class SkillGalaxyComponent implements AfterViewInit {
       skill.y = baseRadius * Math.sin(theta) * Math.sin(phi);
       skill.z = baseRadius * Math.cos(phi);
 
-      // Creación del planeta
       const geometry = new THREE.SphereGeometry(skill.size, 32, 32);
       const material = new THREE.MeshPhongMaterial({
         color: new THREE.Color(skill.color),
@@ -177,24 +176,22 @@ export class SkillGalaxyComponent implements AfterViewInit {
       planet.position.set(skill.x, skill.y, skill.z);
       planet.userData = skill;
       
-      // Añadir anillo a tecnologías principales
-      if (['Angular', 'React', 'TypeScript'].includes(skill.name)) {
-        const ringGeometry = new THREE.RingGeometry(skill.size * 1.2, skill.size * 1.4, 32);
-        const ringMaterial = new THREE.MeshBasicMaterial({
-          color: new THREE.Color(skill.color),
-          side: THREE.DoubleSide,
-          transparent: true,
-          opacity: 0.4
-        });
-        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-        ring.rotation.x = Math.PI / 2;
-        planet.add(ring);
-      }
+      const ringGeometry = new THREE.RingGeometry(skill.size * 1.3, skill.size * 1.5, 32);
+      const ringMaterial = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(skill.color),
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0,
+        visible: false
+      });
+      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+      ring.rotation.x = Math.PI / 2;
+      ring.name = 'selectionRing';
+      planet.add(ring);
 
       this.scene.add(planet);
     });
 
-    // Posición inicial de cámara responsive
     this.camera.position.z = baseRadius * (isMobile ? 3 : 2.5);
     this.camera.fov = isMobile ? 55 : 45;
     this.camera.updateProjectionMatrix();
@@ -207,16 +204,13 @@ export class SkillGalaxyComponent implements AfterViewInit {
     this.controls.rotateSpeed = 0.5;
     this.controls.zoomSpeed = 0.8;
     
-    // Límites de zoom responsive
     const isMobile = window.innerWidth < 768;
     this.controls.minDistance = isMobile ? 8 : 10;
     this.controls.maxDistance = isMobile ? 20 : 30;
     
-    // Auto-rotación inicial
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 0.5;
     
-    // Manejo mejorado del scroll
     this.controls.addEventListener('change', () => {
       if (this.controls.getDistance() < (this.wasMobile ? 12 : 15)) {
         this.galaxyCanvas.nativeElement.style.pointerEvents = 'none';
@@ -228,77 +222,115 @@ export class SkillGalaxyComponent implements AfterViewInit {
 
   private addInteractivity(): void {
     const raycaster = new THREE.Raycaster();
-    raycaster.params.Points.threshold = 0.2; // Aumentar sensibilidad para objetos pequeños
+    raycaster.params.Line!.threshold = 0.1;
+    raycaster.params.Points!.threshold = 0.1;
     const pointer = new THREE.Vector2();
 
-    const handleInteraction = (event: MouseEvent | TouchEvent) => {
-      // Obtener coordenadas normalizadas
-      const getCoordinates = (clientX: number, clientY: number) => {
-        pointer.x = (clientX / this.galaxyCanvas.nativeElement.clientWidth) * 2 - 1;
-        pointer.y = - (clientY / this.galaxyCanvas.nativeElement.clientHeight) * 2 + 1;
-      };
+    const updatePointer = (clientX: number, clientY: number) => {
+      const rect = this.galaxyCanvas.nativeElement.getBoundingClientRect();
+      pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    };
 
+    const handleClick = (event: MouseEvent | TouchEvent) => {
+      event.preventDefault();
+      
       if (event instanceof TouchEvent) {
-        event.preventDefault(); // Prevenir scroll accidental
         const touch = event.touches[0] || event.changedTouches[0];
-        getCoordinates(touch.clientX, touch.clientY);
+        updatePointer(touch.clientX, touch.clientY);
       } else {
-        getCoordinates(event.clientX, event.clientY);
+        updatePointer(event.clientX, event.clientY);
       }
 
       raycaster.setFromCamera(pointer, this.camera);
       
-      // Incluir todos los objetos en la detección
-      const allObjects: THREE.Object3D[] = [];
-      this.scene.traverse(obj => allObjects.push(obj));
+      const intersects = raycaster.intersectObjects(this.scene.children, true);
       
-      const intersects = raycaster.intersectObjects(allObjects, true);
-
       this.ngZone.run(() => {
         if (intersects.length > 0) {
-          // Buscar el objeto padre que tiene userData (el planeta)
-          let clickedObj: THREE.Object3D | null = intersects[0].object;
+          let clickedObj = intersects[0].object;
           
-          while (clickedObj !== null && !(clickedObj.userData && clickedObj.userData['name'])) {
-            clickedObj = clickedObj.parent;
+          while (clickedObj && !clickedObj.userData?.['name']) {
+            if (clickedObj.parent) {
+              clickedObj = clickedObj.parent;
+            } else {
+              break;
+            }
           }
-      
-          if (clickedObj !== null && clickedObj.userData && clickedObj.userData['name']) {
-            this.selectedSkill = {
-              name: clickedObj.userData['name'] as string,
-              icon: clickedObj.userData['icon'] as string,
-              size: clickedObj.userData['size'] as number,
-              color: clickedObj.userData['color'] as string,
-              x: clickedObj.userData['x'] as number,
-              y: clickedObj.userData['y'] as number,
-              z: clickedObj.userData['z'] as number,
-              experience: clickedObj.userData['experience'] as string
-            };
+
+          if (clickedObj?.userData?.['name']) {
+            this.selectedSkill = clickedObj.userData as Skill;
             this.showClickPrompt = false;
             return;
           }
         }
-        this.selectedSkill = null;
       });
     };
 
-    // Agregar eventos con passive: false para mejor control en móviles
-    this.galaxyCanvas.nativeElement.addEventListener('click', handleInteraction);
-    this.galaxyCanvas.nativeElement.addEventListener('touchstart', handleInteraction, { passive: false });
+    const handleHover = (event: MouseEvent) => {
+      updatePointer(event.clientX, event.clientY);
+      raycaster.setFromCamera(pointer, this.camera);
+      
+      const intersects = raycaster.intersectObjects(this.scene.children, true);
+      
+      this.ngZone.run(() => {
+        if (intersects.length > 0) {
+          let hoveredObj = intersects[0].object;
+          
+          while (hoveredObj && !hoveredObj.userData?.['name']) {
+            if (hoveredObj.parent) {
+              hoveredObj = hoveredObj.parent;
+            } else {
+              break;
+            }
+          }
+
+          if (hoveredObj?.userData?.['name']) {
+            this.hoveredSkill = hoveredObj.userData as Skill;
+            this.galaxyCanvas.nativeElement.style.cursor = 'pointer';
+            return;
+          }
+        }
+        
+        this.hoveredSkill = null;
+        this.galaxyCanvas.nativeElement.style.cursor = 'grab';
+      });
+    };
+
+    this.galaxyCanvas.nativeElement.addEventListener('click', handleClick);
+    this.galaxyCanvas.nativeElement.addEventListener('touchstart', handleClick, { passive: false });
+    this.galaxyCanvas.nativeElement.addEventListener('mousemove', handleHover);
+  }
+
+  private updateSelectionRings(): void {
+    this.scene.traverse(obj => {
+      if (obj.name === 'selectionRing') {
+        const ring = obj as THREE.Mesh;
+        const material = ring.material as THREE.MeshBasicMaterial;
+        
+        if (this.hoveredSkill && ring.parent?.userData?.['name'] === this.hoveredSkill.name) {
+          material.visible = true;
+          material.opacity = 0.6;
+        } else if (this.selectedSkill && ring.parent?.userData?.['name'] === this.selectedSkill.name) {
+          material.visible = true;
+          material.opacity = 0.8;
+        } else {
+          material.visible = false;
+          material.opacity = 0;
+        }
+      }
+    });
   }
 
   private onWindowResize(): void {
-    // Debounce para evitar múltiples recálculos
     clearTimeout(this.resizeDebounceTimeout);
     this.resizeDebounceTimeout = setTimeout(() => {
       const canvas = this.galaxyCanvas.nativeElement;
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       
-      // Actualizar cámara
       this.camera.aspect = width / height;
       
-      // Redistribuir planetas si cambió de móvil a desktop o viceversa
       const currentIsMobile = width < 768;
       if (this.wasMobile !== currentIsMobile) {
         this.distributePlanets();
@@ -315,6 +347,7 @@ export class SkillGalaxyComponent implements AfterViewInit {
       const animationLoop = () => {
         this.animationId = requestAnimationFrame(animationLoop);
         this.controls.update();
+        this.updateSelectionRings();
         this.renderer.render(this.scene, this.camera);
       };
       animationLoop();

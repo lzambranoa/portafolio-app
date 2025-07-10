@@ -1,26 +1,25 @@
-<h2  id="skills"class="text-center">Skills</h2>
 <div class="galaxy-container">
+  <!-- Mensaje inicial -->
+  <div class="click-prompt" *ngIf="showClickPrompt" @fadeInOut>
+    <p>¡Haz click en los planetas para conocer mis habilidades!</p>
+  </div>
+
+  <!-- Canvas para Three.js -->
   <canvas #galaxyCanvas class="galaxy-canvas"></canvas>
-  
-  <!-- Tooltip con animación -->
-  <div *ngIf="selectedSkill" class="skill-tooltip" @pulse>
-    <div class="tooltip-content">
-      <img [src]="selectedSkill!.icon" [alt]="selectedSkill!.name" class="skill-icon">
-      <h3>{{ selectedSkill!.name }}</h3>
-      <p>{{ selectedSkill!.experience }} de experiencia</p>
-      <button (click)="selectedSkill = null" class="close-btn">
-        <svg viewBox="0 0 24 24">
-          <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+
+  <!-- Tooltip de habilidad seleccionada -->
+  <div class="skill-tooltip" *ngIf="selectedSkill" @pulse>
+    <div class="tooltip-header" [style.background-color]="selectedSkill.color">
+      <img [src]="selectedSkill.icon" [alt]="selectedSkill.name + ' icon'">
+      <h3>{{selectedSkill.name}}</h3>
+      <button class="close-button" (click)="closeTooltip()" aria-label="Cerrar tooltip">
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="white" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
         </svg>
       </button>
     </div>
-  </div>
-  
-  <!-- Prompt con animación -->
-  <div *ngIf="showClickPrompt" class="click-prompt" @fadeInOut>
-    <div class="prompt-content">
-      <span class="click-icon">👆</span>
-      <p>Haz clic en los planetas</p>
+    <div class="tooltip-body">
+      <p>Experiencia: {{selectedSkill.experience}}</p>
     </div>
   </div>
 </div>
