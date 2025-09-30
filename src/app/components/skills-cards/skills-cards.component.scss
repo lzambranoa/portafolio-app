@@ -1,0 +1,86 @@
+.skills {
+  text-align: center;
+  padding: 3rem 1rem;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #542C49;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .flip-card {
+    perspective: 1000px;
+    cursor: pointer;
+    outline: none;
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+
+    // Clase que activa el flip (usada por click/tap)
+    &.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .flip-front {
+      img.skill-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+      }
+
+      .level {
+        color: #F3A712;
+      }
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: #542C49;
+      color: #fff;
+
+      h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+        opacity: 0.95;
+      }
+    }
+
+    // Hover solo en dispositivos que soportan hover (desktop)
+    @media (hover: hover) and (pointer: fine) {
+      &:hover .flip-inner {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+}

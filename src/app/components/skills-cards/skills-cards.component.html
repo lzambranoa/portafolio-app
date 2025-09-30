@@ -1,0 +1,32 @@
+<section class="skills">
+  <div class="skills-grid">
+    <div
+      class="flip-card"
+      *ngFor="let skill of skills"
+      [class.flipped]="skill.flipped"
+      tabindex="0"
+      role="button"
+      [attr.aria-pressed]="skill.flipped"
+      (click)="toggleFlip(skill, $event)"
+      (keydown.enter)="toggleFlip(skill, $event)"
+      (keydown.space)="toggleFlip(skill, $event)"
+    >
+      <div class="flip-inner">
+        <!-- Front -->
+        <div class="flip-front">
+          <img [src]="skill.icon" [alt]="skill.name" class="skill-icon" />
+          <h3>{{ skill.name }}</h3>
+          <p class="level">{{ skill.level }}</p>
+        </div>
+        <!-- Back -->
+        <div class="flip-back">
+          <h3>{{ skill.name }}</h3>
+          <p>{{ skill.experience }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+

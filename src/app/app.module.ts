@@ -13,6 +13,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { SkillGalaxyComponent } from './components/skill-galaxy/skill-galaxy.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SkillsCardsComponent } from "./components/skills-cards/skills-cards.component";
 
 
 @NgModule({
@@ -32,8 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    
-  ],
+    SkillsCardsComponent
+],
   providers: [],
   bootstrap: [AppComponent]
 })
