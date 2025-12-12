@@ -1,35 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <div class="navbar">
-            <div>
-                <ul>
-                    <a href="/">
-                        <li>home</li>
-                    </a>
-                    <a href="#about">
-                        <li>acerca de mi</li>
-                    </a>
-                    <a href="#portfolio">
-                        <li>mis proyectos</li>
-                    </a>
-                    <a href="#skills">
-                        <li>skills</li>
-                    </a>
-                </ul>
-            </div>
-            <div>
-                <a href="#contact">
-                    <button class="btn-contacto">
-                        Contactame
-                    </button>
-                </a> 
-            </div>
-        </div>
-      </div>
+<nav class="navbar">
+    <div class="logo">
+        <a href="/">LZ</a>
     </div>
-  </nav>
 
+    <div class="hamburger" (click)="toggleMenu()" [class.active]="isMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="menu-overlay" [class.open]="isMenuOpen">
+        <ul class="nav-links">
+            <li (click)="closeMenu()"><a href="#home">Home</a></li>
+            <li (click)="closeMenu()"><a href="#about">Acerca de mí</a></li>
+            <li (click)="closeMenu()"><a href="#portfolio">Proyectos</a></li>
+            <li (click)="closeMenu()"><a href="#skills">Skills</a></li>
+            <li (click)="closeMenu()">
+                <a href="#contact" class="btn-contacto-mobile">Contáctame</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="desktop-menu">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Acerca de mí</a></li>
+            <li><a href="#portfolio">Proyectos</a></li>
+            <li><a href="#skills">Skills</a></li>
+        </ul>
+        <a href="#contact" class="btn-contacto">Contáctame</a>
+    </div>
+</nav>

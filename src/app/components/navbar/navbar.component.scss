@@ -1,45 +1,183 @@
-
-$hoverColor: #F3A712;
+@import '../../../styles.scss';
 
 .navbar {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto;
     display: flex;
-    justify-content: end;
-    align-items: baseline;
-    z-index: 3;
+    justify-content: space-between; // Space between logo and menu/hamburger
+    align-items: center;
+    z-index: 1000;
+    padding: 15px 50px;
+    @include glass-effect;
+    transition: all 0.3s ease;
 
     @media (max-width: 992px) {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 15px 20px;
     }
 }
-ul {
-    display: inline-flex;
 
+.logo {
     a {
-        color: inherit;
+        font-family: $fontHeading;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $accentColor;
         text-decoration: none;
+        @include neon-text;
     }
+}
 
-    li {
-        list-style: none;
-        font-size: 1.4rem;
-        padding: 10px;
-        margin: 0px 10px;
+// Desktop Menu
+.desktop-menu {
+    display: flex;
+    align-items: center;
 
-        &:hover {
-            color: $hoverColor ;
-        }
+    ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        margin-right: 20px;
 
-        @media (max-width: 992px) {
-            padding-left: 0px;
-            margin-left: 0px ;
+        li {
+            list-style: none;
+            margin: 0 15px;
+
+            a {
+                color: $fontColor;
+                text-decoration: none;
+                font-family: $fontText;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                position: relative;
+
+                &:hover {
+                    color: $accentColor;
+
+                    &::after {
+                        width: 100%;
+                    }
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    width: 0;
+                    height: 1px;
+                    background-color: $accentColor;
+                    transition: width 0.3s ease;
+                }
+            }
         }
     }
 
     @media (max-width: 992px) {
-        display: block;
-        padding: 0;
+        display: none; // Hide on mobile
     }
-    
+}
+
+// Hamburger Menu
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001; // Above overlay
+
+    span {
+        width: 25px;
+        height: 3px;
+        background-color: $accentColor;
+        margin: 3px 0;
+        transition: 0.4s;
+        border-radius: 2px;
+    }
+
+    &.active {
+        span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        span:nth-child(2) {
+            opacity: 0;
+        }
+
+        span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+    }
+
+    @media (max-width: 992px) {
+        display: flex;
+    }
+}
+
+// Mobile Menu Overlay
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(10, 25, 47, 0.95); // Darker background for menu
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(100%); // Hidden by default
+    transition: transform 0.4s ease-in-out;
+    z-index: 1000; // Below hamburger
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+
+        li {
+            list-style: none;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+
+            a {
+                font-family: $fontText;
+                font-size: 1.5rem;
+                color: $fontColor;
+                text-decoration: none;
+
+                &:hover {
+                    color: $accentColor;
+                }
+            }
+        }
+    }
+
+    // Staggered animation for links when open
+    &.open {
+        .nav-links li {
+            opacity: 1;
+            transform: translateY(0);
+
+            @for $i from 1 through 5 {
+                &:nth-child(#{$i}) {
+                    transition-delay: 0.1s * $i;
+                }
+            }
+        }
+    }
+}
+
+.btn-contacto-mobile {
+    @extend .btn-contacto;
+    font-size: 1.2rem;
+    padding: 10px 30px;
 }
